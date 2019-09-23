@@ -342,7 +342,7 @@ ___WEB_PERMISSIONS___
             "listItem": [
               {
                 "type": 1,
-                "string": "https://eyal-singular-web-sdk.s3-eu-west-1.amazonaws.com/singular-gtm-interface.js"
+                "string": "http://web-sdk-cdn.singular.net/singular-gtm-interface/latest/singular-gtm-interface.js"
               }
             ]
           }
