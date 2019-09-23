@@ -342,7 +342,7 @@ ___WEB_PERMISSIONS___
             "listItem": [
               {
                 "type": 1,
-                "string": "http://web-sdk-cdn.singular.net/singular-gtm-interface/latest/singular-gtm-interface.js"
+                "string": "https://web-sdk-cdn.singular.net/singular-gtm-interface/latest/singular-gtm-interface.js"
               }
             ]
           }
@@ -372,7 +372,7 @@ if (data.attributes) {
 
 singularSdkQueuePush(data);
 
-injectScript("http://web-sdk-cdn.singular.net/singular-gtm-interface/latest/singular-gtm-interface.js", data.gtmOnSuccess, data.gtmOnFailure);
+injectScript("https://web-sdk-cdn.singular.net/singular-gtm-interface/latest/singular-gtm-interface.js", data.gtmOnSuccess, data.gtmOnFailure);
 
 
 ___NOTES___
