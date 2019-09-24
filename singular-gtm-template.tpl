@@ -109,8 +109,12 @@ ___TEMPLATE_PARAMETERS___
         "value": 1
       },
       {
-        "displayValue": "Debug",
+        "displayValue": "Info",
         "value": 2
+      },
+      {
+        "value": 3,
+        "displayValue": "Debug"
       }
     ],
     "enablingConditions": [
@@ -377,4 +381,4 @@ injectScript("https://web-sdk-cdn.singular.net/singular-gtm-interface/latest/sin
 
 ___NOTES___
 
-Created on 9/23/2019, 8:57:26 PM
+Created on 9/24/2019, 7:57:02 PM
