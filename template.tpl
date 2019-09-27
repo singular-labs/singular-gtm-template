@@ -1,4 +1,4 @@
-﻿___TERMS_OF_SERVICE___
+___TERMS_OF_SERVICE___
 
 
 By creating or modifying this file you agree to Google Tag Manager's Community
@@ -14,6 +14,7 @@ ___INFO___
 {
   "displayName": "Singular Web Tracking",
   "description": "Uses Singular's Web SDK to track events.",
+  "categories": ["ATTRIBUTION", "ANALYTICS", "MARKETING"],
   "securityGroups": [],
   "id": "cvt_temp_public_id",
   "type": "TAG",
