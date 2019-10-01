@@ -1,5 +1,5 @@
 homepage: "https://www.singular.net"
 documentation: "https://developers.singular.net/docs/singular-web-sdk-google-tag-manager-integration"
 versions:
-  - sha: 87ebdf5dd1e1b0c1
+  - sha: 87ebdf5dd1e1b0c1f2075edea31fe9be8ad8d067
     changeNotes: Initial Release
