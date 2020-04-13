@@ -64,6 +64,10 @@ ___TEMPLATE_PARAMETERS___
       {
         "value": "pageVisit",
         "displayValue": "Page Visit"
+      },
+      {
+        "value": "setDeviceCustomUserId",
+        "displayValue": "Set Device Custom User Id"
       }
     ],
     "displayName": "Track Type",
@@ -171,7 +175,7 @@ ___TEMPLATE_PARAMETERS___
     "type": "TEXT"
   },
   {
-    "help": "Sets the provided user id and persists it until using the \"Logout\" Track Type method. (Mandatory only on \"Login\" Track Type, Optional on the rest)",
+    "help": "Sets the provided user id and persists it until using the \"Logout\" Track Type method. (Mandatory only on \"Login\" \u0026 \"Set Custom User Id\" Track Types, Optional on the rest)",
     "enablingConditions": [
       {
         "paramName": "trackType",
@@ -196,6 +200,11 @@ ___TEMPLATE_PARAMETERS___
       {
         "paramName": "trackType",
         "paramValue": "revenue",
+        "type": "EQUALS"
+      },
+      {
+        "paramName": "trackType",
+        "paramValue": "setDeviceCustomUserId",
         "type": "EQUALS"
       }
     ],
@@ -301,6 +310,39 @@ ___TEMPLATE_PARAMETERS___
       }
     ],
     "type": "SIMPLE_TABLE"
+  },
+  {
+    "type": "TEXT",
+    "name": "sessionTimeout",
+    "displayName": "Session Timeout",
+    "simpleValueType": true,
+    "valueUnit": "Minutes",
+    "valueValidators": [
+      {
+        "type": "REGEX",
+        "enablingConditions": [],
+        "args": [
+          "^(?:[1-9]\\d*|0)?(?:\\.\\d+)?$"
+        ],
+        "errorMessage": "Value must be a positive number"
+      },
+      {
+        "type": "REGEX",
+        "args": [
+          "^-?(0\\.\\d*[1-9]\\d*|[1-9]\\d*(\\.\\d+)?)$"
+        ],
+        "errorMessage": "Value must be a positive number"
+      }
+    ],
+    "enablingConditions": [
+      {
+        "paramName": "trackType",
+        "paramValue": "init",
+        "type": "EQUALS"
+      }
+    ],
+    "help": "Session timeout is the duration of user inactivity before starting a new session. The default value is 30 mins.",
+    "defaultValue": 30
   }
 ]
 
@@ -423,6 +465,6 @@ scenarios: []
 
 ___NOTES___
 
-Created on 2/23/2020, 2:19:35 PM
+Created on 4/13/2020, 2:08:20 PM
 
 
