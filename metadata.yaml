@@ -1,6 +1,8 @@
 homepage: "https://www.singular.net"
 documentation: "https://developers.singular.net/docs/singular-web-sdk-google-tag-manager-integration"
 versions:
+  - sha: 4b7e450c4d386727d4df7090cfadf75aebbc17e5
+    changeNotes: Added support in Custom User Id Device mapping and session management
   - sha: 86cc003fe468914ae3abf93095f6015688f01c4e
     changeNotes: Added Page Visit track type
   - sha: 981f31dfda85e3d8fb6d4b9d6c78dfe62c3f2b54
