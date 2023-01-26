@@ -1,6 +1,8 @@
 homepage: "https://www.singular.net"
 documentation: "https://support.singular.net/hc/en-us/articles/360037640472--NEW-Singular-Website-SDK-Google-Tag-Manager-Integration"
 versions:
+  - sha: 695f4c7a35e8263028db2a5a3b3f9fb9947854fb
+    changeNotes: Documentation small update
   - sha: dc6605a5a24d796df4c0cda9e0b9008b12861635
     changeNotes: Added cross sub-domain support
   - sha: 4b7e450c4d386727d4df7090cfadf75aebbc17e5
