@@ -10,7 +10,7 @@ ___INFO___
 
 {
   "displayName": "Singular Web Tracking",
-  "description": "Use the Singular Javascript Tag to track website events and collect web attribution data. Singular allows you to create standardized tracking links for web and mobile, and pulls ad spend and upstream data to report on ROAS for all of your channels. For more information, please visit https://support.singular.net/hc/en-us",
+  "description": "Use the Singular Javascript Tag to track website events and collect web attribution data. Singular allows you to create standardized tracking links for web and mobile, and pulls ad spend and upstream data to report on ROAS for all of your channels. For more information, please visit https://support.singular.net/hc/en-us.",
   "categories": [
     "ATTRIBUTION",
     "CONVERSIONS",
