@@ -68,6 +68,18 @@ ___TEMPLATE_PARAMETERS___
       {
         "value": "setDeviceCustomUserId",
         "displayValue": "Set Device Custom User Id"
+      },
+      {
+        "value": "getMatchID",
+        "displayValue": "Get Match ID"
+      },
+      {
+        "value": "setMatchID",
+        "displayValue": "Set Match ID"
+      },
+      {
+        "value": "clearMatchID",
+        "displayValue": "Clear Match ID"
       }
     ],
     "displayName": "Track Type",
