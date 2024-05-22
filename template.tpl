@@ -187,6 +187,20 @@ ___TEMPLATE_PARAMETERS___
     "type": "TEXT"
   },
   {
+    "help": "The value of the match id for the user.",
+    "enablingConditions": [
+      {
+        "paramName": "trackType",
+        "type": "EQUALS",
+        "paramValue": "setMatchId"
+      },
+    ],
+    "displayName": "Match Id",
+    "simpleValueType": true,
+    "name": "matchId",
+    "type": "TEXT"
+  },
+  {
     "help": "Sets the provided user id and persists it until using the \"Logout\" Track Type method. (Mandatory only on \"Login\" \u0026 \"Set Custom User Id\" Track Types, Optional on the rest)",
     "enablingConditions": [
       {
