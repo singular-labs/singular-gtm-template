@@ -192,7 +192,7 @@ ___TEMPLATE_PARAMETERS___
       {
         "paramName": "trackType",
         "type": "EQUALS",
-        "paramValue": "setMatchId"
+        "paramValue": "setMatchID"
       },
     ],
     "displayName": "Match Id",
