@@ -1,6 +1,8 @@
 homepage: "https://www.singular.net"
 documentation: "https://support.singular.net/hc/en-us/articles/360037640472--NEW-Singular-Website-SDK-Google-Tag-Manager-Integration"
 versions:
+  - sha: a010d1e415035cc26f772d44c975766661300a1d
+    changeNotes: Fix capital letter
   - sha: d08631003513c06d44ee5b1d08dfb9ddf433e2cb
     changeNotes: Added match id variable
   - sha: 292e2f7245c65ee32949070ce0ef089344b32d54
