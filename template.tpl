@@ -80,6 +80,18 @@ ___TEMPLATE_PARAMETERS___
       {
         "value": "clearMatchID",
         "displayValue": "Clear Match ID"
+      },
+      {
+        "value": "getGlobalProperties",
+        "displayValue": "Get Global Properties"
+      },
+      {
+        "value": "setGlobalProperties",
+        "displayValue": "Set Global Properties"
+      },
+      {
+        "value": "clearGlobalProperties",
+        "displayValue": "Clear Global Properties"
       }
     ],
     "displayName": "Track Type",
@@ -199,6 +211,44 @@ ___TEMPLATE_PARAMETERS___
     "simpleValueType": true,
     "name": "matchId",
     "type": "TEXT"
+  },
+  {
+    "help": "The key for the global property.",
+    "enablingConditions": [
+      {
+        "paramName": "trackType",
+        "type": "EQUALS",
+        "paramValue": "setGlobalProperties"
+      },
+    ],
+    "displayName": "Key",
+    "simpleValueType": true,
+    "name": "key",
+    "type": "TEXT"
+    "valueValidators": [
+      {
+        "type": "NON_EMPTY"
+      }
+    ]
+  },
+  {
+    "help": "The value for the global property.",
+    "enablingConditions": [
+      {
+        "paramName": "trackType",
+        "type": "EQUALS",
+        "paramValue": "setGlobalProperties"
+      },
+    ],
+    "displayName": "Value",
+    "simpleValueType": true,
+    "name": "value",
+    "type": "TEXT"
+    "valueValidators": [
+      {
+        "type": "NON_EMPTY"
+      }
+    ]
   },
   {
     "help": "Sets the provided user id and persists it until using the \"Logout\" Track Type method. (Mandatory only on \"Login\" \u0026 \"Set Custom User Id\" Track Types, Optional on the rest)",
