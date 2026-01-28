@@ -458,7 +458,7 @@ ___TEMPLATE_PARAMETERS___
     "name": "subDomainTracking",
     "checkboxText": "Enable Cross Sub-Domain Tracking",
     "simpleValueType": true,
-    "help": ":45\nCheck this box to have the Singular SDK use a persistent Singular Device ID. This ID can be managed automatically using cookies or you can provide it manually through a GTM variable.",
+    "help": "Check this box to have the Singular SDK use a persistent Singular Device ID. This ID can be managed automatically using cookies or you can provide it manually through a GTM variable.",
     "displayName": "Cross Sub-Domain Tracking",
     "defaultValue": false,
     "enablingConditions": [
@@ -859,7 +859,100 @@ ___WEB_PERMISSIONS___
 
 ___TESTS___
 
-scenarios: []
+scenarios:
+  - name: "Test Init"
+    code: |
+      const mockData = {
+        trackType: "init",
+        apikey: "test_api_key_123",
+        secret: "test_secret_456",
+        packageName: "com.test.website",
+        logLevel: 2,
+        sessionTimeout: 30,
+        enableBanners: false
+      };
+      
+      // Mock the injectScript to prevent actual script loading
+      mock('injectScript', function(url, onSuccess, onFailure) {
+        onSuccess();
+      });
+      
+      runCode(mockData);
+      
+      assertApi('createQueue').wasCalled();
+      assertApi('injectScript').wasCalled();
+
+  - name: "Test Custom Event"
+    code: |
+      const mockData = {
+        trackType: "custom",
+        eventName: "test_event",
+        attributes: [
+          { key: "param1", value: "value1" }
+        ]
+      };
+      
+      mock('injectScript', function(url, onSuccess, onFailure) {
+        onSuccess();
+      });
+      
+      runCode(mockData);
+      
+      assertApi('createQueue').wasCalled();
+      assertApi('injectScript').wasCalled();
+
+  - name: "Test Page Visit"
+    code: |
+      const mockData = {
+        trackType: "pageVisit"
+      };
+      
+      mock('injectScript', function(url, onSuccess, onFailure) {
+        onSuccess();
+      });
+      
+      runCode(mockData);
+      
+      assertApi('createQueue').wasCalled();
+
+  - name: "Test Show Banner"
+    code: |
+      const mockData = {
+        trackType: "showBanner",
+        baseLink: "https://singular.net/app"
+      };
+      
+      mock('injectScript', function(url, onSuccess, onFailure) {
+        onSuccess();
+      });
+      
+      runCode(mockData);
+      
+      assertApi('createQueue').wasCalled();
+
+  - name: "Test Global Properties on Init"
+    code: |
+      const mockData = {
+        trackType: "init",
+        apikey: "test_api_key",
+        secret: "test_secret",
+        packageName: "test.website",
+        logLevel: 2,
+        globalProperties: [
+          { key: "app_version", value: "1.0.0" },
+          { key: "environment", value: "test" }
+        ],
+        overrideExistingGlobalProperties: true
+      };
+      
+      mock('injectScript', function(url, onSuccess, onFailure) {
+        onSuccess();
+      });
+      
+      runCode(mockData);
+      
+      assertApi('createQueue').wasCalled();
+      assertApi('makeTableMap').wasCalled();
 
 
 ___NOTES___
