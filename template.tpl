@@ -525,10 +525,6 @@ ___TEMPLATE_PARAMETERS___
     ]
   },
   {
-    "type": "TEXT",
-    "name": "productName",
-    "displayName": "Product Name (Optional)",
-    "simpleValueType": true,
     "help": "An optional display name for the product/website.",
     "enablingConditions": [
       {
@@ -536,13 +532,23 @@ ___TEMPLATE_PARAMETERS___
         "paramValue": "init",
         "type": "EQUALS"
       }
-    ]
+    ],
+    "displayName": "Product Name (Optional)",
+    "simpleValueType": true,
+    "name": "productName",
+    "type": "TEXT"
   },
   {
-    "type": "SIMPLE_TABLE",
-    "name": "globalProperties",
-    "displayName": "Global Properties (Optional)",
     "help": "Set global properties that will be sent with all events. These are set during initialization.",
+    "enablingConditions": [
+      {
+        "paramName": "trackType",
+        "paramValue": "init",
+        "type": "EQUALS"
+      }
+    ],
+    "displayName": "Global Properties (Optional)",
+    "name": "globalProperties",
     "simpleTableColumns": [
       {
         "valueValidators": [
@@ -568,60 +574,55 @@ ___TEMPLATE_PARAMETERS___
         "type": "TEXT"
       }
     ],
-    "enablingConditions": [
-      {
-        "paramName": "trackType",
-        "paramValue": "init",
-        "type": "EQUALS"
-      }
-    ]
+    "type": "SIMPLE_TABLE"
   },
   {
-    "type": "CHECKBOX",
-    "name": "overrideExistingGlobalProperties",
-    "checkboxText": "Override existing global properties",
-    "simpleValueType": true,
     "help": "If checked, these global properties will override any existing properties with the same key.",
-    "defaultValue": false,
     "enablingConditions": [
       {
         "paramName": "trackType",
         "paramValue": "init",
         "type": "EQUALS"
       }
-    ]
+    ],
+    "displayName": "Override Global Properties",
+    "simpleValueType": true,
+    "name": "overrideExistingGlobalProperties",
+    "type": "CHECKBOX",
+    "checkboxText": "Override existing global properties",
+    "defaultValue": false
   },
   {
-    "type": "CHECKBOX",
-    "name": "enableBanners",
-    "checkboxText": "Enable Smart Banners",
-    "simpleValueType": true,
     "help": "Enable Smart Banners support. When enabled, you can use the Show Banner and Hide Banner track types.",
-    "displayName": "Smart Banners",
-    "defaultValue": false,
     "enablingConditions": [
       {
         "paramName": "trackType",
         "paramValue": "init",
         "type": "EQUALS"
       }
-    ]
+    ],
+    "displayName": "Smart Banners",
+    "simpleValueType": true,
+    "name": "enableBanners",
+    "type": "CHECKBOX",
+    "checkboxText": "Enable Smart Banners",
+    "defaultValue": false
   },
   {
-    "type": "CHECKBOX",
-    "name": "enableWebToApp",
-    "checkboxText": "Enable Web-to-App Support",
-    "simpleValueType": true,
     "help": "Enable Web-to-App support for banners. This allows the banner to redirect users to your mobile app.",
-    "displayName": "Web-to-App Support",
-    "defaultValue": false,
     "enablingConditions": [
       {
         "paramName": "enableBanners",
         "paramValue": true,
         "type": "EQUALS"
       }
-    ]
+    ],
+    "displayName": "Web-to-App Support",
+    "simpleValueType": true,
+    "name": "enableWebToApp",
+    "type": "CHECKBOX",
+    "checkboxText": "Enable Web-to-App Support",
+    "defaultValue": false
   },
   {
     "help": "The base tracking link URL for the banner or web-to-app flow.",
@@ -653,54 +654,6 @@ ___TEMPLATE_PARAMETERS___
     ]
   },
   {
-    "type": "GROUP",
-    "name": "linkParamsGroup",
-    "displayName": "Link Parameters (Optional)",
-    "groupStyle": "ZIPPY_CLOSED",
-    "subParams": [
-      {
-        "type": "TEXT",
-        "name": "androidRedirect",
-        "displayName": "Android Redirect URL",
-        "simpleValueType": true,
-        "help": "Custom redirect URL for Android devices"
-      },
-      {
-        "type": "TEXT",
-        "name": "androidDeeplink",
-        "displayName": "Android Deep Link",
-        "simpleValueType": true,
-        "help": "Deep link for Android app"
-      },
-      {
-        "type": "TEXT",
-        "name": "androidDeferredDeeplink",
-        "displayName": "Android Deferred Deep Link",
-        "simpleValueType": true,
-        "help": "Deferred deep link for Android app (used after install)"
-      },
-      {
-        "type": "TEXT",
-        "name": "iosRedirect",
-        "displayName": "iOS Redirect URL",
-        "simpleValueType": true,
-        "help": "Custom redirect URL for iOS devices"
-      },
-      {
-        "type": "TEXT",
-        "name": "iosDeeplink",
-        "displayName": "iOS Deep Link",
-        "simpleValueType": true,
-        "help": "Deep link for iOS app"
-      },
-      {
-        "type": "TEXT",
-        "name": "iosDeferredDeeplink",
-        "displayName": "iOS Deferred Deep Link",
-        "simpleValueType": true,
-        "help": "Deferred deep link for iOS app (used after install)"
-      }
-    ],
     "enablingConditions": [
       {
         "paramName": "trackType",
@@ -717,7 +670,55 @@ ___TEMPLATE_PARAMETERS___
         "type": "EQUALS",
         "paramValue": "buildWebToAppLink"
       }
-    ]
+    ],
+    "displayName": "Link Parameters (Optional)",
+    "name": "linkParamsGroup",
+    "groupStyle": "ZIPPY_CLOSED",
+    "subParams": [
+      {
+        "help": "Custom redirect URL for Android devices",
+        "displayName": "Android Redirect URL",
+        "simpleValueType": true,
+        "name": "androidRedirect",
+        "type": "TEXT"
+      },
+      {
+        "help": "Deep link for Android app",
+        "displayName": "Android Deep Link",
+        "simpleValueType": true,
+        "name": "androidDeeplink",
+        "type": "TEXT"
+      },
+      {
+        "help": "Deferred deep link for Android app (used after install)",
+        "displayName": "Android Deferred Deep Link",
+        "simpleValueType": true,
+        "name": "androidDeferredDeeplink",
+        "type": "TEXT"
+      },
+      {
+        "help": "Custom redirect URL for iOS devices",
+        "displayName": "iOS Redirect URL",
+        "simpleValueType": true,
+        "name": "iosRedirect",
+        "type": "TEXT"
+      },
+      {
+        "help": "Deep link for iOS app",
+        "displayName": "iOS Deep Link",
+        "simpleValueType": true,
+        "name": "iosDeeplink",
+        "type": "TEXT"
+      },
+      {
+        "help": "Deferred deep link for iOS app (used after install)",
+        "displayName": "iOS Deferred Deep Link",
+        "simpleValueType": true,
+        "name": "iosDeferredDeeplink",
+        "type": "TEXT"
+      }
+    ],
+    "type": "GROUP"
   },
   {
     "help": "The URL to enrich with marketing attribution data.",
