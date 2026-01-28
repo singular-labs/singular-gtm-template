@@ -1,4 +1,4 @@
-﻿___TERMS_OF_SERVICE___
+___TERMS_OF_SERVICE___
 
 By creating or modifying this file you agree to Google Tag Manager's Community
 Template Gallery Developer Terms of Service available at
@@ -70,6 +70,10 @@ ___TEMPLATE_PARAMETERS___
         "displayValue": "Set Device Custom User Id"
       },
       {
+        "value": "getSingularDeviceId",
+        "displayValue": "Get Singular Device ID"
+      },
+      {
         "value": "getMatchID",
         "displayValue": "Get Match ID"
       },
@@ -90,8 +94,32 @@ ___TEMPLATE_PARAMETERS___
         "displayValue": "Set Global Properties"
       },
       {
+        "value": "unsetGlobalProperty",
+        "displayValue": "Unset Global Property"
+      },
+      {
         "value": "clearGlobalProperties",
         "displayValue": "Clear Global Properties"
+      },
+      {
+        "value": "showBanner",
+        "displayValue": "Show Banner"
+      },
+      {
+        "value": "hideBanner",
+        "displayValue": "Hide Banner"
+      },
+      {
+        "value": "openApp",
+        "displayValue": "Open App"
+      },
+      {
+        "value": "buildWebToAppLink",
+        "displayValue": "Build Web To App Link"
+      },
+      {
+        "value": "enrichUrlWithMarketingData",
+        "displayValue": "Enrich URL With Marketing Data"
       }
     ],
     "displayName": "Track Type",
@@ -205,7 +233,7 @@ ___TEMPLATE_PARAMETERS___
         "paramName": "trackType",
         "type": "EQUALS",
         "paramValue": "setMatchID"
-      },
+      }
     ],
     "displayName": "Match Id",
     "simpleValueType": true,
@@ -220,11 +248,16 @@ ___TEMPLATE_PARAMETERS___
         "type": "EQUALS",
         "paramValue": "setGlobalProperties"
       },
+      {
+        "paramName": "trackType",
+        "type": "EQUALS",
+        "paramValue": "unsetGlobalProperty"
+      }
     ],
     "displayName": "Key",
     "simpleValueType": true,
     "name": "key",
-    "type": "TEXT"
+    "type": "TEXT",
     "valueValidators": [
       {
         "type": "NON_EMPTY"
@@ -238,12 +271,12 @@ ___TEMPLATE_PARAMETERS___
         "paramName": "trackType",
         "type": "EQUALS",
         "paramValue": "setGlobalProperties"
-      },
+      }
     ],
     "displayName": "Value",
     "simpleValueType": true,
     "name": "value",
-    "type": "TEXT"
+    "type": "TEXT",
     "valueValidators": [
       {
         "type": "NON_EMPTY"
@@ -490,6 +523,220 @@ ___TEMPLATE_PARAMETERS___
         "type": "EQUALS"
       }
     ]
+  },
+  {
+    "type": "TEXT",
+    "name": "productName",
+    "displayName": "Product Name (Optional)",
+    "simpleValueType": true,
+    "help": "An optional display name for the product/website.",
+    "enablingConditions": [
+      {
+        "paramName": "trackType",
+        "paramValue": "init",
+        "type": "EQUALS"
+      }
+    ]
+  },
+  {
+    "type": "SIMPLE_TABLE",
+    "name": "globalProperties",
+    "displayName": "Global Properties (Optional)",
+    "help": "Set global properties that will be sent with all events. These are set during initialization.",
+    "simpleTableColumns": [
+      {
+        "valueValidators": [
+          {
+            "type": "NON_EMPTY"
+          }
+        ],
+        "defaultValue": "",
+        "displayName": "Key",
+        "name": "key",
+        "isUnique": true,
+        "type": "TEXT"
+      },
+      {
+        "valueValidators": [
+          {
+            "type": "NON_EMPTY"
+          }
+        ],
+        "defaultValue": "",
+        "displayName": "Value",
+        "name": "value",
+        "type": "TEXT"
+      }
+    ],
+    "enablingConditions": [
+      {
+        "paramName": "trackType",
+        "paramValue": "init",
+        "type": "EQUALS"
+      }
+    ]
+  },
+  {
+    "type": "CHECKBOX",
+    "name": "overrideExistingGlobalProperties",
+    "checkboxText": "Override existing global properties",
+    "simpleValueType": true,
+    "help": "If checked, these global properties will override any existing properties with the same key.",
+    "defaultValue": false,
+    "enablingConditions": [
+      {
+        "paramName": "trackType",
+        "paramValue": "init",
+        "type": "EQUALS"
+      }
+    ]
+  },
+  {
+    "type": "CHECKBOX",
+    "name": "enableBanners",
+    "checkboxText": "Enable Smart Banners",
+    "simpleValueType": true,
+    "help": "Enable Smart Banners support. When enabled, you can use the Show Banner and Hide Banner track types.",
+    "displayName": "Smart Banners",
+    "defaultValue": false,
+    "enablingConditions": [
+      {
+        "paramName": "trackType",
+        "paramValue": "init",
+        "type": "EQUALS"
+      }
+    ]
+  },
+  {
+    "type": "CHECKBOX",
+    "name": "enableWebToApp",
+    "checkboxText": "Enable Web-to-App Support",
+    "simpleValueType": true,
+    "help": "Enable Web-to-App support for banners. This allows the banner to redirect users to your mobile app.",
+    "displayName": "Web-to-App Support",
+    "defaultValue": false,
+    "enablingConditions": [
+      {
+        "paramName": "enableBanners",
+        "paramValue": true,
+        "type": "EQUALS"
+      }
+    ]
+  },
+  {
+    "help": "The base tracking link URL for the banner or web-to-app flow.",
+    "enablingConditions": [
+      {
+        "paramName": "trackType",
+        "type": "EQUALS",
+        "paramValue": "showBanner"
+      },
+      {
+        "paramName": "trackType",
+        "type": "EQUALS",
+        "paramValue": "openApp"
+      },
+      {
+        "paramName": "trackType",
+        "type": "EQUALS",
+        "paramValue": "buildWebToAppLink"
+      }
+    ],
+    "displayName": "Base Link",
+    "simpleValueType": true,
+    "name": "baseLink",
+    "type": "TEXT",
+    "valueValidators": [
+      {
+        "type": "NON_EMPTY"
+      }
+    ]
+  },
+  {
+    "type": "GROUP",
+    "name": "linkParamsGroup",
+    "displayName": "Link Parameters (Optional)",
+    "groupStyle": "ZIPPY_CLOSED",
+    "subParams": [
+      {
+        "type": "TEXT",
+        "name": "androidRedirect",
+        "displayName": "Android Redirect URL",
+        "simpleValueType": true,
+        "help": "Custom redirect URL for Android devices"
+      },
+      {
+        "type": "TEXT",
+        "name": "androidDeeplink",
+        "displayName": "Android Deep Link",
+        "simpleValueType": true,
+        "help": "Deep link for Android app"
+      },
+      {
+        "type": "TEXT",
+        "name": "androidDeferredDeeplink",
+        "displayName": "Android Deferred Deep Link",
+        "simpleValueType": true,
+        "help": "Deferred deep link for Android app (used after install)"
+      },
+      {
+        "type": "TEXT",
+        "name": "iosRedirect",
+        "displayName": "iOS Redirect URL",
+        "simpleValueType": true,
+        "help": "Custom redirect URL for iOS devices"
+      },
+      {
+        "type": "TEXT",
+        "name": "iosDeeplink",
+        "displayName": "iOS Deep Link",
+        "simpleValueType": true,
+        "help": "Deep link for iOS app"
+      },
+      {
+        "type": "TEXT",
+        "name": "iosDeferredDeeplink",
+        "displayName": "iOS Deferred Deep Link",
+        "simpleValueType": true,
+        "help": "Deferred deep link for iOS app (used after install)"
+      }
+    ],
+    "enablingConditions": [
+      {
+        "paramName": "trackType",
+        "type": "EQUALS",
+        "paramValue": "showBanner"
+      },
+      {
+        "paramName": "trackType",
+        "type": "EQUALS",
+        "paramValue": "openApp"
+      },
+      {
+        "paramName": "trackType",
+        "type": "EQUALS",
+        "paramValue": "buildWebToAppLink"
+      }
+    ]
+  },
+  {
+    "help": "The URL to enrich with marketing attribution data.",
+    "enablingConditions": [
+      {
+        "paramName": "trackType",
+        "type": "EQUALS",
+        "paramValue": "enrichUrlWithMarketingData"
+      }
+    ],
+    "displayName": "URL",
+    "simpleValueType": true,
+    "name": "urlToEnrich",
+    "type": "TEXT",
+    "valueValidators": [
+      {
+        "type": "NON_EMPTY"
+      }
+    ]
   }
 ]
 
@@ -502,9 +749,13 @@ const createQueue = require('createQueue');
 
 const singularSdkQueuePush = createQueue('singularSdkQueue');
 
-// Converting the param table to map
+// Converting the param tables to maps
 if (data.attributes) {
   data.attributes = makeTableMap(data.attributes, 'key', 'value');
+}
+
+if (data.globalProperties) {
+  data.globalProperties = makeTableMap(data.globalProperties, 'key', 'value');
 }
 
 singularSdkQueuePush(data);
