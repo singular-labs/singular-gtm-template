@@ -224,7 +224,7 @@ ___TEMPLATE_PARAMETERS___
     "displayName": "Key",
     "simpleValueType": true,
     "name": "key",
-    "type": "TEXT"
+    "type": "TEXT",
     "valueValidators": [
       {
         "type": "NON_EMPTY"
@@ -243,7 +243,7 @@ ___TEMPLATE_PARAMETERS___
     "displayName": "Value",
     "simpleValueType": true,
     "name": "value",
-    "type": "TEXT"
+    "type": "TEXT",
     "valueValidators": [
       {
         "type": "NON_EMPTY"
