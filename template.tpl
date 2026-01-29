@@ -219,7 +219,7 @@ ___TEMPLATE_PARAMETERS___
         "paramName": "trackType",
         "type": "EQUALS",
         "paramValue": "setGlobalProperties"
-      },
+      }
     ],
     "displayName": "Key",
     "simpleValueType": true,
