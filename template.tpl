@@ -205,7 +205,7 @@ ___TEMPLATE_PARAMETERS___
         "paramName": "trackType",
         "type": "EQUALS",
         "paramValue": "setMatchID"
-      },
+      }
     ],
     "displayName": "Match Id",
     "simpleValueType": true,
