@@ -625,13 +625,8 @@ ___TEMPLATE_PARAMETERS___
     "defaultValue": false
   },
   {
-    "help": "The base tracking link URL for the banner or web-to-app flow.",
+    "help": "The base tracking link URL for the web-to-app flow.",
     "enablingConditions": [
-      {
-        "paramName": "trackType",
-        "type": "EQUALS",
-        "paramValue": "showBanner"
-      },
       {
         "paramName": "trackType",
         "type": "EQUALS",
@@ -680,7 +675,14 @@ ___TEMPLATE_PARAMETERS___
         "displayName": "Android Redirect URL",
         "simpleValueType": true,
         "name": "androidRedirect",
-        "type": "TEXT"
+        "type": "TEXT",
+        "enablingConditions": [
+          {
+            "paramName": "trackType",
+            "type": "EQUALS",
+            "paramValue": "showBanner"
+          }
+        ]
       },
       {
         "help": "Deep link for Android app",
@@ -701,7 +703,14 @@ ___TEMPLATE_PARAMETERS___
         "displayName": "iOS Redirect URL",
         "simpleValueType": true,
         "name": "iosRedirect",
-        "type": "TEXT"
+        "type": "TEXT",
+        "enablingConditions": [
+          {
+            "paramName": "trackType",
+            "type": "EQUALS",
+            "paramValue": "showBanner"
+          }
+        ]
       },
       {
         "help": "Deep link for iOS app",
