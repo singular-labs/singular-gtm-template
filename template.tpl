@@ -203,6 +203,47 @@ ___TEMPLATE_PARAMETERS___
     "type": "SELECT"
   },
   {
+    "help": "When enabled, duplicate events (same event name, attributes, etc.) sent within the specified time threshold will be deduplicated and only sent once.",
+    "enablingConditions": [
+      {
+        "paramName": "trackType",
+        "paramValue": "init",
+        "type": "EQUALS"
+      }
+    ],
+    "displayName": "Event Deduplication",
+    "simpleValueType": true,
+    "name": "enableEventsDedup",
+    "type": "CHECKBOX",
+    "checkboxText": "Enable Event Deduplication",
+    "defaultValue": false
+  },
+  {
+    "type": "TEXT",
+    "name": "timeBetweenEvents",
+    "displayName": "Time Between Events",
+    "simpleValueType": true,
+    "valueUnit": "milliseconds",
+    "valueValidators": [
+      {
+        "type": "REGEX",
+        "args": [
+          "^[1-9]\\d*$"
+        ],
+        "errorMessage": "Value must be a positive integer"
+      }
+    ],
+    "enablingConditions": [
+      {
+        "paramName": "enableEventsDedup",
+        "paramValue": true,
+        "type": "EQUALS"
+      }
+    ],
+    "help": "The time threshold (in milliseconds) for event deduplication. Default is 1000ms (1 second).",
+    "defaultValue": 1000
+  },
+  {
     "help": "The name of the tracking event.",
     "enablingConditions": [
       {
