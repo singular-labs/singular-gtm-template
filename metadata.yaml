@@ -1,6 +1,8 @@
 homepage: "https://www.singular.net"
 documentation: "https://support.singular.net/hc/en-us/articles/360037640472--NEW-Singular-Website-SDK-Google-Tag-Manager-Integration"
 versions:
+  - sha: 1180991d4ad0397fbb6eccf73c0ae8c8609a22c8
+    changeNotes: Feature parity with web-sdk version 1.4.9
   - sha: afe72166aeae207b02f67d61c8434ffbc02aefee
     changeNotes: fix comma
   - sha: 125f84683ef86ece5bac7ab6f051948ef610dbbf
