@@ -325,6 +325,22 @@ ___TEMPLATE_PARAMETERS___
     ]
   },
   {
+    "help": "When enabled, replaces an existing value for this key. When disabled, the value is only set if the key does not already exist.",
+    "enablingConditions": [
+      {
+        "paramName": "trackType",
+        "type": "EQUALS",
+        "paramValue": "setGlobalProperties"
+      }
+    ],
+    "displayName": "Override Existing",
+    "simpleValueType": true,
+    "name": "overrideExisting",
+    "type": "CHECKBOX",
+    "defaultValue": false,
+    "checkboxText": "Override existing value for this key"
+  },
+  {
     "help": "Sets the provided user id and persists it until using the \"Logout\" Track Type method. (Mandatory only on \"Login\" \u0026 \"Set Custom User Id\" Track Types, Optional on the rest)",
     "enablingConditions": [
       {
@@ -580,7 +596,7 @@ ___TEMPLATE_PARAMETERS___
     "type": "TEXT"
   },
   {
-    "help": "Set global properties that will be sent with all events. These are set during initialization.",
+    "help": "Set global properties that will be sent with all events. These are set during initialization. Use the overrideExisting checkbox per row to replace existing values for that key.",
     "enablingConditions": [
       {
         "paramName": "trackType",
@@ -613,25 +629,20 @@ ___TEMPLATE_PARAMETERS___
         "displayName": "Value",
         "name": "value",
         "type": "TEXT"
+      },
+      {
+        "displayName": "Override",
+        "name": "overrideExisting",
+        "type": "SELECT",
+        "defaultValue": "false",
+        "simpleValueType": true,
+        "selectItems": [
+          { "displayValue": "false", "value": "false" },
+          { "displayValue": "true", "value": "true" }
+        ]
       }
     ],
     "type": "SIMPLE_TABLE"
-  },
-  {
-    "help": "If checked, existing global properties will be cleared and replaced with the new properties. If unchecked, new properties will be merged with existing ones.",
-    "enablingConditions": [
-      {
-        "paramName": "trackType",
-        "paramValue": "init",
-        "type": "EQUALS"
-      }
-    ],
-    "displayName": "Override Global Properties",
-    "simpleValueType": true,
-    "name": "overrideExistingGlobalProperties",
-    "type": "CHECKBOX",
-    "checkboxText": "Override existing global properties",
-    "defaultValue": false
   },
   {
     "help": "Enable Smart Banners support. When enabled, you can use the Show Banner and Hide Banner track types.",
@@ -806,7 +817,15 @@ if (data.attributes) {
 }
 
 if (data.globalProperties) {
-  data.globalProperties = makeTableMap(data.globalProperties, 'key', 'value');
+  data.globalProperties = data.globalProperties.map(row => ({
+    key: row.key,
+    value: row.value,
+    overrideExisting: row.overrideExisting === true || row.overrideExisting === 'true'
+  }));
+}
+
+if (data.trackType === 'setGlobalProperties' && data.hasOwnProperty('overrideExisting')) {
+  data.overrideExisting = data.overrideExisting === true || data.overrideExisting === 'true';
 }
 
 singularSdkQueuePush(data);
