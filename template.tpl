@@ -282,13 +282,37 @@ ___TEMPLATE_PARAMETERS___
     "type": "TEXT"
   },
   {
-    "help": "The key for the global property.",
+    "help": "Optional. When set, the returned value is pushed to the data layer under this key. Create a Data Layer Variable in GTM with this key to use the value in other tags or variables.",
     "enablingConditions": [
       {
         "paramName": "trackType",
         "type": "EQUALS",
-        "paramValue": "setGlobalProperties"
+        "paramValue": "getSingularDeviceId"
       },
+      {
+        "paramName": "trackType",
+        "type": "EQUALS",
+        "paramValue": "getMatchID"
+      },
+      {
+        "paramName": "trackType",
+        "type": "EQUALS",
+        "paramValue": "getGlobalProperties"
+      },
+      {
+        "paramName": "trackType",
+        "type": "EQUALS",
+        "paramValue": "buildWebToAppLink"
+      }
+    ],
+    "displayName": "Data Layer Key (optional)",
+    "simpleValueType": true,
+    "name": "dataLayerKey",
+    "type": "TEXT",
+  },
+  {
+    "help": "The key for the global property to unset.",
+    "enablingConditions": [
       {
         "paramName": "trackType",
         "type": "EQUALS",
@@ -306,7 +330,7 @@ ___TEMPLATE_PARAMETERS___
     ]
   },
   {
-    "help": "The value for the global property.",
+    "help": "The global property key.",
     "enablingConditions": [
       {
         "paramName": "trackType",
@@ -314,7 +338,26 @@ ___TEMPLATE_PARAMETERS___
         "paramValue": "setGlobalProperties"
       }
     ],
-    "displayName": "Value",
+    "displayName": "Global Property Key",
+    "simpleValueType": true,
+    "name": "globalPropertyKey",
+    "type": "TEXT",
+    "valueValidators": [
+      {
+        "type": "NON_EMPTY"
+      }
+    ]
+  },
+  {
+    "help": "The global property value.",
+    "enablingConditions": [
+      {
+        "paramName": "trackType",
+        "type": "EQUALS",
+        "paramValue": "setGlobalProperties"
+      }
+    ],
+    "displayName": "Global Property Value",
     "simpleValueType": true,
     "name": "value",
     "type": "TEXT",
@@ -596,53 +639,61 @@ ___TEMPLATE_PARAMETERS___
     "type": "TEXT"
   },
   {
-    "help": "Set global properties that will be sent with all events. These are set during initialization. Use the overrideExisting checkbox per row to replace existing values for that key.",
+    "help": "Set global properties (key, value, and whether to override an existing value). Each row is applied in order.",
     "enablingConditions": [
       {
         "paramName": "trackType",
-        "paramValue": "init",
-        "type": "EQUALS"
+        "type": "EQUALS",
+        "paramValue": "init"
       }
     ],
     "displayName": "Global Properties (Optional)",
     "name": "globalProperties",
+    "type": "SIMPLE_TABLE",
     "simpleTableColumns": [
       {
-        "valueValidators": [
-          {
-            "type": "NON_EMPTY"
-          }
-        ],
-        "defaultValue": "",
         "displayName": "Key",
         "name": "key",
-        "isUnique": true,
-        "type": "TEXT"
-      },
-      {
+        "type": "TEXT",
+        "defaultValue": "",
+        "help": "The global property key.",
         "valueValidators": [
           {
             "type": "NON_EMPTY"
           }
-        ],
-        "defaultValue": "",
-        "displayName": "Value",
-        "name": "value",
-        "type": "TEXT"
+        ]
       },
       {
-        "displayName": "Override",
+        "displayName": "Value",
+        "name": "value",
+        "type": "TEXT",
+        "defaultValue": "",
+        "help": "The value for the global property.",
+        "valueValidators": [
+          {
+            "type": "NON_EMPTY"
+          }
+        ]
+      },
+      {
+        "displayName": "Override Existing",
         "name": "overrideExisting",
         "type": "SELECT",
         "defaultValue": "false",
         "simpleValueType": true,
+        "help": "When enabled, replaces an existing value for this key. When disabled, the value is only set if the key does not already exist.",
         "selectItems": [
-          { "displayValue": "false", "value": "false" },
-          { "displayValue": "true", "value": "true" }
+          {
+            "displayValue": "false",
+            "value": "false"
+          },
+          {
+            "displayValue": "true",
+            "value": "true"
+          }
         ]
       }
-    ],
-    "type": "SIMPLE_TABLE"
+    ]
   },
   {
     "help": "Enable Smart Banners support. When enabled, you can use the Show Banner and Hide Banner track types.",
@@ -811,21 +862,27 @@ const createQueue = require('createQueue');
 
 const singularSdkQueuePush = createQueue('singularSdkQueue');
 
-// Converting the param tables to maps
+// Converting the param tables to map
 if (data.attributes) {
   data.attributes = makeTableMap(data.attributes, 'key', 'value');
 }
 
+// Runtime: single global property to set (key, value, override)
+if (data.trackType === 'setGlobalProperties') {
+  data.globalProperty = {
+    key: data.globalPropertyKey,
+    value: data.globalPropertyValue,
+    overrideExisting: !!data.globalPropertyOverrideExisting
+  };
+}
+
+// Init: normalize global properties table (array of { key, value, overrideExisting })
 if (data.globalProperties) {
   data.globalProperties = data.globalProperties.map(row => ({
     key: row.key,
     value: row.value,
     overrideExisting: row.overrideExisting === true || row.overrideExisting === 'true'
   }));
-}
-
-if (data.trackType === 'setGlobalProperties' && data.hasOwnProperty('overrideExisting')) {
-  data.overrideExisting = data.overrideExisting === true || data.overrideExisting === 'true';
 }
 
 singularSdkQueuePush(data);
