@@ -66,12 +66,12 @@ ___TEMPLATE_PARAMETERS___
         "displayValue": "Page Visit"
       },
       {
-        "value": "setDeviceCustomUserId",
-        "displayValue": "Set Device Custom User Id"
-      },
-      {
         "value": "getSingularDeviceId",
         "displayValue": "Get Singular Device ID"
+      },
+      {
+        "value": "setDeviceCustomUserId",
+        "displayValue": "Set Device Custom User Id"
       },
       {
         "value": "getMatchID",
@@ -282,13 +282,37 @@ ___TEMPLATE_PARAMETERS___
     "type": "TEXT"
   },
   {
-    "help": "The key for the global property.",
+    "help": "Optional. When set, the returned value is pushed to the data layer under this key. Create a Data Layer Variable in GTM with this key to use the value in other tags or variables.",
     "enablingConditions": [
       {
         "paramName": "trackType",
         "type": "EQUALS",
-        "paramValue": "setGlobalProperties"
+        "paramValue": "getSingularDeviceId"
       },
+      {
+        "paramName": "trackType",
+        "type": "EQUALS",
+        "paramValue": "getMatchID"
+      },
+      {
+        "paramName": "trackType",
+        "type": "EQUALS",
+        "paramValue": "getGlobalProperties"
+      },
+      {
+        "paramName": "trackType",
+        "type": "EQUALS",
+        "paramValue": "buildWebToAppLink"
+      }
+    ],
+    "displayName": "Data Layer Key (optional)",
+    "simpleValueType": true,
+    "name": "dataLayerKey",
+    "type": "TEXT",
+  },
+  {
+    "help": "The key for the global property to unset.",
+    "enablingConditions": [
       {
         "paramName": "trackType",
         "type": "EQUALS",
@@ -306,7 +330,7 @@ ___TEMPLATE_PARAMETERS___
     ]
   },
   {
-    "help": "The value for the global property.",
+    "help": "The global property key.",
     "enablingConditions": [
       {
         "paramName": "trackType",
@@ -314,7 +338,26 @@ ___TEMPLATE_PARAMETERS___
         "paramValue": "setGlobalProperties"
       }
     ],
-    "displayName": "Value",
+    "displayName": "Global Property Key",
+    "simpleValueType": true,
+    "name": "globalPropertyKey",
+    "type": "TEXT",
+    "valueValidators": [
+      {
+        "type": "NON_EMPTY"
+      }
+    ]
+  },
+  {
+    "help": "The global property value.",
+    "enablingConditions": [
+      {
+        "paramName": "trackType",
+        "type": "EQUALS",
+        "paramValue": "setGlobalProperties"
+      }
+    ],
+    "displayName": "Global Property Value",
     "simpleValueType": true,
     "name": "value",
     "type": "TEXT",
@@ -323,6 +366,22 @@ ___TEMPLATE_PARAMETERS___
         "type": "NON_EMPTY"
       }
     ]
+  },
+  {
+    "help": "When enabled, replaces an existing value for this key. When disabled, the value is only set if the key does not already exist.",
+    "enablingConditions": [
+      {
+        "paramName": "trackType",
+        "type": "EQUALS",
+        "paramValue": "setGlobalProperties"
+      }
+    ],
+    "displayName": "Override Existing",
+    "simpleValueType": true,
+    "name": "overrideExisting",
+    "type": "CHECKBOX",
+    "defaultValue": false,
+    "checkboxText": "Override existing value for this key"
   },
   {
     "help": "Sets the provided user id and persists it until using the \"Logout\" Track Type method. (Mandatory only on \"Login\" \u0026 \"Set Custom User Id\" Track Types, Optional on the rest)",
@@ -580,58 +639,61 @@ ___TEMPLATE_PARAMETERS___
     "type": "TEXT"
   },
   {
-    "help": "Set global properties that will be sent with all events. These are set during initialization.",
+    "help": "Set global properties (key, value, and whether to override an existing value). Each row is applied in order.",
     "enablingConditions": [
       {
         "paramName": "trackType",
-        "paramValue": "init",
-        "type": "EQUALS"
+        "type": "EQUALS",
+        "paramValue": "init"
       }
     ],
     "displayName": "Global Properties (Optional)",
     "name": "globalProperties",
+    "type": "SIMPLE_TABLE",
     "simpleTableColumns": [
       {
-        "valueValidators": [
-          {
-            "type": "NON_EMPTY"
-          }
-        ],
-        "defaultValue": "",
         "displayName": "Key",
         "name": "key",
-        "isUnique": true,
-        "type": "TEXT"
-      },
-      {
+        "type": "TEXT",
+        "defaultValue": "",
+        "help": "The global property key.",
         "valueValidators": [
           {
             "type": "NON_EMPTY"
           }
-        ],
-        "defaultValue": "",
+        ]
+      },
+      {
         "displayName": "Value",
         "name": "value",
-        "type": "TEXT"
-      }
-    ],
-    "type": "SIMPLE_TABLE"
-  },
-  {
-    "help": "If checked, existing global properties will be cleared and replaced with the new properties. If unchecked, new properties will be merged with existing ones.",
-    "enablingConditions": [
+        "type": "TEXT",
+        "defaultValue": "",
+        "help": "The value for the global property.",
+        "valueValidators": [
+          {
+            "type": "NON_EMPTY"
+          }
+        ]
+      },
       {
-        "paramName": "trackType",
-        "paramValue": "init",
-        "type": "EQUALS"
+        "displayName": "Override Existing",
+        "name": "overrideExisting",
+        "type": "SELECT",
+        "defaultValue": "false",
+        "simpleValueType": true,
+        "help": "When enabled, replaces an existing value for this key. When disabled, the value is only set if the key does not already exist.",
+        "selectItems": [
+          {
+            "displayValue": "false",
+            "value": "false"
+          },
+          {
+            "displayValue": "true",
+            "value": "true"
+          }
+        ]
       }
-    ],
-    "displayName": "Override Global Properties",
-    "simpleValueType": true,
-    "name": "overrideExistingGlobalProperties",
-    "type": "CHECKBOX",
-    "checkboxText": "Override existing global properties",
-    "defaultValue": false
+    ]
   },
   {
     "help": "Enable Smart Banners support. When enabled, you can use the Show Banner and Hide Banner track types.",
@@ -800,13 +862,27 @@ const createQueue = require('createQueue');
 
 const singularSdkQueuePush = createQueue('singularSdkQueue');
 
-// Converting the param tables to maps
+// Converting the param tables to map
 if (data.attributes) {
   data.attributes = makeTableMap(data.attributes, 'key', 'value');
 }
 
+// Runtime: single global property to set (key, value, override)
+if (data.trackType === 'setGlobalProperties') {
+  data.globalProperty = {
+    key: data.globalPropertyKey,
+    value: data.globalPropertyValue,
+    overrideExisting: !!data.globalPropertyOverrideExisting
+  };
+}
+
+// Init: normalize global properties table (array of { key, value, overrideExisting })
 if (data.globalProperties) {
-  data.globalProperties = makeTableMap(data.globalProperties, 'key', 'value');
+  data.globalProperties = data.globalProperties.map(row => ({
+    key: row.key,
+    value: row.value,
+    overrideExisting: row.overrideExisting === true || row.overrideExisting === 'true'
+  }));
 }
 
 singularSdkQueuePush(data);
