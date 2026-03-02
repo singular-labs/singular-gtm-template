@@ -66,12 +66,12 @@ ___TEMPLATE_PARAMETERS___
         "displayValue": "Page Visit"
       },
       {
-        "value": "setDeviceCustomUserId",
-        "displayValue": "Set Device Custom User Id"
-      },
-      {
         "value": "getSingularDeviceId",
         "displayValue": "Get Singular Device ID"
+      },
+      {
+        "value": "setDeviceCustomUserId",
+        "displayValue": "Set Device Custom User Id"
       },
       {
         "value": "getMatchID",
