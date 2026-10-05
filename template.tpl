@@ -102,6 +102,18 @@ ___TEMPLATE_PARAMETERS___
         "displayValue": "Clear Global Properties"
       },
       {
+        "value": "limitDataSharing",
+        "displayValue": "Set Limit Data Sharing"
+      },
+      {
+        "value": "getLimitDataSharing",
+        "displayValue": "Get Limit Data Sharing"
+      },
+      {
+        "value": "clearLimitDataSharing",
+        "displayValue": "Clear Limit Data Sharing"
+      },
+      {
         "value": "showBanner",
         "displayValue": "Show Banner"
       },
@@ -302,13 +314,18 @@ ___TEMPLATE_PARAMETERS___
       {
         "paramName": "trackType",
         "type": "EQUALS",
+        "paramValue": "getLimitDataSharing"
+      },
+      {
+        "paramName": "trackType",
+        "type": "EQUALS",
         "paramValue": "buildWebToAppLink"
       }
     ],
     "displayName": "Data Layer Key (optional)",
     "simpleValueType": true,
     "name": "dataLayerKey",
-    "type": "TEXT",
+    "type": "TEXT"
   },
   {
     "help": "The key for the global property to unset.",
@@ -471,6 +488,69 @@ ___TEMPLATE_PARAMETERS___
     "simpleValueType": true,
     "name": "revenue",
     "type": "TEXT"
+  },
+  {
+    "help": "Notify Singular whether the user consented to share their data with third-party partners. true: the user opted out, false: the user opted in. On Initialization and Set Limit Data Sharing the value is persisted and sent with every event, set it on initialization to have the first page visit carry the value. On Conversion, Custom and Revenue events it applies to that event only. (Mandatory only on the \"Set Limit Data Sharing\" Track Type, Optional on the rest)",
+    "enablingConditions": [
+      {
+        "paramName": "trackType",
+        "type": "EQUALS",
+        "paramValue": "init"
+      },
+      {
+        "paramName": "trackType",
+        "type": "EQUALS",
+        "paramValue": "limitDataSharing"
+      },
+      {
+        "paramName": "trackType",
+        "type": "EQUALS",
+        "paramValue": "conversion"
+      },
+      {
+        "paramName": "trackType",
+        "type": "EQUALS",
+        "paramValue": "custom"
+      },
+      {
+        "paramName": "trackType",
+        "type": "EQUALS",
+        "paramValue": "revenue"
+      }
+    ],
+    "valueValidators": [
+      {
+        "enablingConditions": [
+          {
+            "paramName": "trackType",
+            "type": "EQUALS",
+            "paramValue": "limitDataSharing"
+          }
+        ],
+        "errorMessage": "When using the Set Limit Data Sharing method, a value must be selected",
+        "type": "NON_EMPTY"
+      }
+    ],
+    "displayName": "Limit Data Sharing",
+    "simpleValueType": true,
+    "name": "limitDataSharing",
+    "type": "SELECT",
+    "macrosInSelect": false,
+    "defaultValue": "",
+    "selectItems": [
+      {
+        "displayValue": "Not set",
+        "value": ""
+      },
+      {
+        "displayValue": "true",
+        "value": "true"
+      },
+      {
+        "displayValue": "false",
+        "value": "false"
+      }
+    ]
   },
   {
     "help": "(Optional) A Key-Value map that can be sent along with the tracking event.",
@@ -867,15 +947,6 @@ if (data.attributes) {
   data.attributes = makeTableMap(data.attributes, 'key', 'value');
 }
 
-// Runtime: single global property to set (key, value, override)
-if (data.trackType === 'setGlobalProperties') {
-  data.globalProperty = {
-    key: data.globalPropertyKey,
-    value: data.globalPropertyValue,
-    overrideExisting: !!data.globalPropertyOverrideExisting
-  };
-}
-
 // Init: normalize global properties table (array of { key, value, overrideExisting })
 if (data.globalProperties) {
   data.globalProperties = data.globalProperties.map(row => ({
@@ -883,6 +954,19 @@ if (data.globalProperties) {
     value: row.value,
     overrideExisting: row.overrideExisting === true || row.overrideExisting === 'true'
   }));
+}
+
+// Normalize limit data sharing select value to a boolean
+if (data.limitDataSharing === 'true' || data.limitDataSharing === 'false') {
+  data.limitDataSharing = data.limitDataSharing === 'true';
+} else {
+  data.limitDataSharing = undefined;
+}
+
+// Events: apply limit data sharing to this event only through the reserved attribute
+if ((data.trackType === 'conversion' || data.trackType === 'custom' || data.trackType === 'revenue') && data.limitDataSharing !== undefined) {
+  data.attributes = data.attributes || {};
+  data.attributes.sng_attr_limit_data_sharing = data.limitDataSharing;
 }
 
 singularSdkQueuePush(data);
