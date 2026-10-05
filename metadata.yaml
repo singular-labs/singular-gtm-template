@@ -1,6 +1,8 @@
 homepage: "https://www.singular.net"
 documentation: "https://support.singular.net/hc/en-us/articles/360037640472--NEW-Singular-Website-SDK-Google-Tag-Manager-Integration"
 versions:
+  - sha: 3076ebf5d220148219fef02a60871c6db0c2c0cd
+    changeNotes: Added Limit Data Sharing support (on initialization, Set / Get / Clear Limit Data Sharing track types, and per-event override)
   - sha: 84022bee0cc85d5a0908c5730b685ed34c29fe0f
     changeNotes: Feature parity with web-sdk version 1.4.10
   - sha: 302502c9006b9ba7bcf0f72e53f46fbdc080ea54
